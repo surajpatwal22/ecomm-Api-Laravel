@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,10 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('update_password',[UserController::class,'updatePassword']);
 Route::post('update_profile',[UserController::class,'updateProfile']);
 Route::get('get_profile',[UserController::class,'getProfile']);
+Route::post('review', [ReviewController::class,'review']);
+Route::get('all_reviews', [ReviewController::class, 'getAllReviews']);
+Route::delete('all_reviews/{id}', [ReviewController::class, 'deleteReview']);
+
 
 Route::middleware('admin')->group(function(){
     //Admin routes 

@@ -23,4 +23,8 @@ class product extends Model
     public function getFileDataAttribute(){
         return url($this->file);
     }
+
+    public function reviews(){
+        return $this->hasMany(review::class, 'product_id', 'id');
+    }
 }

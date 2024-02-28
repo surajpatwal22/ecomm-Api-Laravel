@@ -235,39 +235,7 @@ class UserController extends Controller
 
         }
     }
-
-    public function showAllProduct(Request $request)
-    {
-
-        $sortBy = $request->input('sort_by', 'price');
-        $sortOrder = $request->input('sort_order', 'desc');
-        $products = Product::orderBy($sortBy, $sortOrder)->get();
-        return response()->json([
-            'products' => $products,
-            'status' => 200,
-            'success' => true
-        ]);
-    }
-
-    public function show($id)
-    {
-        $product = product::find($id);
-        if (!$product) {
-            return response()->json([
-                'message' => 'something went wrong',
-                'status' => 400,
-                'success' => false
-            ], 400);
-        } else {
-            return response()->json([
-                'message' => 'Data is retrived successfully',
-                'product' => $product,
-                'status' => 200,
-                'success' => true
-            ], 200);
-        }
-    }
-
+    
     public function getProfile()
     {
         return response()->json([
@@ -343,6 +311,44 @@ class UserController extends Controller
             'status' => 200,
             'success' => true
         ]);
+    }
+
+    public function showAllProduct(Request $request)
+    {
+
+        $sortBy = $request->input('sort_by', 'price');
+        $sortOrder = $request->input('sort_order', 'desc');
+        $category = $request->input('category');
+
+        $querry = product::with('reviews');
+        if ($category) {
+            $querry->where('category', $category);
+        }
+        $products = $querry->orderBy($sortBy, $sortOrder)->get();
+        return response()->json([
+            'products' => $products,
+            'status' => 200,
+            'success' => true
+        ]);
+    }
+
+    public function show($id)
+    {
+        $product = product::find($id);
+        if (!$product) {
+            return response()->json([
+                'message' => 'something went wrong',
+                'status' => 400,
+                'success' => false
+            ], 400);
+        } else {
+            return response()->json([
+                'message' => 'Data is retrived successfully',
+                'product' => $product,
+                'status' => 200,
+                'success' => true
+            ], 200);
+        }
     }
 }
 
